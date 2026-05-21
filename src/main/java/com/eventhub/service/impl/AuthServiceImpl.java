@@ -9,6 +9,7 @@ import com.eventhub.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -52,8 +53,14 @@ public class AuthServiceImpl implements AuthService {
             throw new BusinessException(INVALID_CREDENTIALS);
         }
 
-        String fakeJwt = "jwt-placeholder-token";
-        return new AuthResponseDTO(fakeJwt, "Bearer", toMe(user));
+        var authentication = new UsernamePasswordAuthenticationToken(
+                user.getEmail(),
+                null,
+                Set.of(() -> user.getRole().name())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return new AuthResponseDTO("session-auth", "Session", toMe(user));
     }
 
     @Override

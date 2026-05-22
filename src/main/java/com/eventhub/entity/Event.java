@@ -41,6 +41,9 @@ public class Event {
     @Column(nullable = false)
     private Integer capacity;
 
+    @Column(name = "image_url", length = 500)
+    private String imageUrl;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private EventStatus status;

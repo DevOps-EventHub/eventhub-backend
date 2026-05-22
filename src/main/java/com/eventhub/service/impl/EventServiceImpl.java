@@ -25,7 +25,11 @@ public class EventServiceImpl implements EventService {
     @Override
     public Page<EventResponseDTO> findAll(String title, String category, String status, String location, Pageable pageable) {
         EventStatus eventStatus = parseStatus(status);
-        return eventRepository.search(title, category, eventStatus, location, pageable).map(this::toResponse);
+        String normalizedTitle = normalizeFilterOrEmpty(title);
+        String normalizedCategory = normalizeFilterOrEmpty(category);
+        String normalizedLocation = normalizeFilterOrEmpty(location);
+        return eventRepository.search(normalizedTitle, normalizedCategory, eventStatus, normalizedLocation, pageable)
+                .map(this::toResponse);
     }
 
     @Override
@@ -67,6 +71,9 @@ public class EventServiceImpl implements EventService {
         event.setStartAt(request.startAt());
         event.setEndAt(request.endAt());
         event.setCapacity(request.capacity());
+        if (existing == null) {
+            event.setImageUrl(null);
+        }
         event.setStatus(parseStatus(request.status()));
         return event;
     }
@@ -82,7 +89,13 @@ public class EventServiceImpl implements EventService {
         }
     }
 
+    private String normalizeFilterOrEmpty(String value) {
+        if (value == null) return "";
+        return value.trim().toLowerCase();
+    }
+
     private EventResponseDTO toResponse(Event e) {
-        return new EventResponseDTO(e.getId(), e.getTitle(), e.getDescription(), e.getCategory().getName(), e.getLocation(), e.getStartAt(), e.getEndAt(), e.getCapacity(), e.getStatus().name());
+        return new EventResponseDTO(e.getId(), e.getTitle(), e.getDescription(), e.getCategory().getName(), e.getLocation(), e.getStartAt(), e.getEndAt(), e.getCapacity(), e.getStatus().name(), e.getImageUrl());
     }
 }
+

@@ -14,5 +14,6 @@ public record EventResponseDTO(
         OffsetDateTime startAt,
         OffsetDateTime endAt,
         Integer capacity,
-        String status
+        String status,
+        String imageUrl
 ) {}

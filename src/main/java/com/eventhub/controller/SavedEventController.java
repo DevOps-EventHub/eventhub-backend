@@ -1,10 +1,12 @@
 package com.eventhub.controller;
 
+import com.eventhub.dto.saved.SavedEventParticipantResponseDTO;
 import com.eventhub.dto.saved.SavedEventResponseDTO;
 import com.eventhub.service.SavedEventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,5 +33,11 @@ public class SavedEventController {
     @GetMapping
     public ResponseEntity<List<SavedEventResponseDTO>> listarEventosSalvos() {
         return ResponseEntity.ok(savedEventService.findMySavedEvents());
+    }
+
+    @GetMapping("/event/{eventId}/participants")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<SavedEventParticipantResponseDTO>> listarParticipantesPorEvento(@PathVariable Long eventId) {
+        return ResponseEntity.ok(savedEventService.findParticipantsByEventId(eventId));
     }
 }

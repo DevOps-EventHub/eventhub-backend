@@ -8,4 +8,5 @@ public interface RegistrationService {
     RegistrationResponseDTO register(Long eventId);
     void cancel(Long eventId);
     List<RegistrationResponseDTO> findMyRegistrations();
+    List<RegistrationResponseDTO> findRegistrationsByEventId(Long eventId);
 }

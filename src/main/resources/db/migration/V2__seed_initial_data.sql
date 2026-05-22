@@ -4,14 +4,6 @@
     'ROLE_ADMIN'::text AS role_admin,
     'PUBLICADO'::text AS status_publicado,
     'RASCUNHO'::text AS status_rascunho
-),
-category_seed AS (
-  SELECT * FROM (
-    VALUES
-      ('T', 'Tecnologia', 'Eventos de tecnologia e inovacao'),
-      ('N', 'Negocios', 'Eventos de lideranca e estrategia'),
-      ('D', 'Design', 'Eventos sobre produto e design')
-  ) AS c(code, name, description)
 )
 INSERT INTO users (name, email, password, role, created_at, updated_at)
 SELECT 'teste', 'teste@teste.com', crypt('123456', gen_salt('bf', 10)), c.role_user, NOW(), NOW()
@@ -21,31 +13,27 @@ SELECT 'admin', 'admin@admin.com', crypt('123456', gen_salt('bf', 10)), c.role_a
 FROM constants c
 ON CONFLICT (email) DO NOTHING;
 
-WITH category_seed AS (
-  SELECT * FROM (
-    VALUES
-      ('T', 'Tecnologia', 'Eventos de tecnologia e inovacao'),
-      ('N', 'Negocios', 'Eventos de lideranca e estrategia'),
-      ('D', 'Design', 'Eventos sobre produto e design')
-  ) AS c(code, name, description)
-)
+CREATE TEMP TABLE tmp_category_seed (
+  code CHAR(1) PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  description VARCHAR(255) NOT NULL
+) ON COMMIT DROP;
+
+INSERT INTO tmp_category_seed (code, name, description)
+VALUES
+  ('T', 'Tecnologia', 'Eventos de tecnologia e inovacao'),
+  ('N', 'Negocios', 'Eventos de lideranca e estrategia'),
+  ('D', 'Design', 'Eventos sobre produto e design');
+
 INSERT INTO categories (name, description)
-SELECT c.name, c.description
-FROM category_seed c
+SELECT t.name, t.description
+FROM tmp_category_seed t
 ON CONFLICT (name) DO NOTHING;
 
 WITH constants AS (
   SELECT
     'PUBLICADO'::text AS status_publicado,
     'RASCUNHO'::text AS status_rascunho
-),
-category_map AS (
-  SELECT * FROM (
-    VALUES
-      ('T', 'Tecnologia'),
-      ('N', 'Negocios'),
-      ('D', 'Design')
-  ) AS m(code, category_name)
 ),
 event_seed AS (
   SELECT * FROM (
@@ -72,8 +60,8 @@ SELECT
     ELSE k.status_rascunho
   END
 FROM event_seed e
-JOIN category_map cm ON cm.code = e.category_code
-JOIN categories c ON c.name = cm.category_name
+JOIN tmp_category_seed tcs ON tcs.code = e.category_code
+JOIN categories c ON c.name = tcs.name
 CROSS JOIN constants k
 WHERE NOT EXISTS (
   SELECT 1 FROM events ev WHERE ev.title = e.title

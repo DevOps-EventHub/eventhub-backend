@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.OffsetDateTime;
 import java.util.Set;
 
-@Schema(description = "Dados do usuÃ¡rio autenticado")
+@Schema(description = "Dados do usuÃƒÂ¡rio autenticado")
 public record UserMeResponseDTO(
         Long id,
         String name,

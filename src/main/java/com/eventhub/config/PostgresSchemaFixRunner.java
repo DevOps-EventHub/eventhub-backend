@@ -1,4 +1,4 @@
-﻿package com.eventhub.config;
+package com.eventhub.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;

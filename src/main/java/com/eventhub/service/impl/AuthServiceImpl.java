@@ -26,7 +26,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public UserMeResponseDTO register(RegisterRequestDTO request) {
         if (userRepository.existsByEmail(request.email())) {
-            throw new BusinessException("E-mail jÃ¡ cadastrado");
+            throw new BusinessException("E-mail jÃƒÂ¡ cadastrado");
         }
 
         Role role = request.roles() != null && !request.roles().isEmpty() ? 

@@ -41,7 +41,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         Registration registration = Registration.builder()
                 .user(user)
                 .event(event)
-                .status(RegistrationStatus.CONFIRMED)
+                .status(RegistrationStatus.CONFIRMADO)
                 .registeredAt(OffsetDateTime.now())
                 .build();
 
@@ -60,6 +60,14 @@ public class RegistrationServiceImpl implements RegistrationService {
     public List<RegistrationResponseDTO> findMyRegistrations() {
         User user = getAuthenticatedUser();
         return registrationRepository.findAllByUserOrderByRegisteredAtDesc(user).stream().map(this::toResponse).toList();
+    }
+
+    @Override
+    public List<RegistrationResponseDTO> findRegistrationsByEventId(Long eventId) {
+        return registrationRepository.findAllByEventIdOrderByRegisteredAtDesc(eventId)
+                .stream()
+                .map(this::toResponse)
+                .toList();
     }
 
     private RegistrationResponseDTO toResponse(Registration r) {

@@ -5,6 +5,7 @@ import com.eventhub.service.RegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,5 +31,11 @@ public class RegistrationController {
     @GetMapping("/my")
     public ResponseEntity<List<RegistrationResponseDTO>> listarMinhasInscricoes() {
         return ResponseEntity.ok(registrationService.findMyRegistrations());
+    }
+
+    @GetMapping("/event/{eventId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<RegistrationResponseDTO>> listarInscricoesPorEvento(@PathVariable Long eventId) {
+        return ResponseEntity.ok(registrationService.findRegistrationsByEventId(eventId));
     }
 }

@@ -1,5 +1,6 @@
 package com.eventhub.service.impl;
 
+import com.eventhub.dto.saved.SavedEventParticipantResponseDTO;
 import com.eventhub.dto.saved.SavedEventResponseDTO;
 import com.eventhub.entity.Event;
 import com.eventhub.entity.SavedEvent;
@@ -59,7 +60,15 @@ public class SavedEventServiceImpl implements SavedEventService {
         User user = getAuthenticatedUser();
         return savedEventRepository.findAllByUserOrderBySavedAtDesc(user)
                 .stream()
-                .map(s -> new SavedEventResponseDTO(s.getEvent().getId(), s.getEvent().getTitle(), s.getEvent().getLocation(), s.getEvent().getStartAt(), s.getSavedAt()))
+                .map(s -> new SavedEventResponseDTO(s.getEvent().getId(), s.getEvent().getTitle(), s.getEvent().getDescription(), s.getEvent().getCategory().getName(), s.getEvent().getLocation(), s.getEvent().getStartAt(), s.getSavedAt(), s.getEvent().getImageUrl()))
+                .toList();
+    }
+
+    @Override
+    public List<SavedEventParticipantResponseDTO> findParticipantsByEventId(Long eventId) {
+        return savedEventRepository.findAllByEventIdOrderBySavedAtDesc(eventId)
+                .stream()
+                .map(s -> new SavedEventParticipantResponseDTO(s.getUser().getId(), s.getUser().getName(), s.getUser().getEmail(), s.getSavedAt()))
                 .toList();
     }
 

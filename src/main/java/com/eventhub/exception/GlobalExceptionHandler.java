@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
         ApiErrorResponse body = new ApiErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
-                "Dados de entrada inválidos",
+                "Dados de entrada invÃ¡lidos",
                 request.getRequestURI(),
                 OffsetDateTime.now(),
                 details
@@ -60,7 +60,7 @@ public class GlobalExceptionHandler {
         ApiErrorResponse body = new ApiErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
-                "Violação de restrições",
+                "ViolaÃ§Ã£o de restriÃ§Ãµes",
                 request.getRequestURI(),
                 OffsetDateTime.now(),
                 details
@@ -70,7 +70,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({BadCredentialsException.class})
     public ResponseEntity<ApiErrorResponse> handleUnauthorized(Exception ex, HttpServletRequest request) {
-        return build(HttpStatus.UNAUTHORIZED, "Não autenticado", request.getRequestURI());
+        return build(HttpStatus.UNAUTHORIZED, "NÃ£o autenticado", request.getRequestURI());
     }
 
     @ExceptionHandler(AccessDeniedException.class)

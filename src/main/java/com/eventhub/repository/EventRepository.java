@@ -12,10 +12,10 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     @Query("""
             select e from Event e
-            where (:title is null or lower(e.title) like lower(concat('%', :title, '%')))
-              and (:category is null or lower(e.category.name) = lower(:category))
+            where lower(e.title) like concat('%', :title, '%')
+              and (:category = '' or lower(e.category.name) = :category)
               and (:status is null or e.status = :status)
-              and (:location is null or lower(e.location) like lower(concat('%', :location, '%')))
+              and lower(e.location) like concat('%', :location, '%')
             """)
     Page<Event> search(
             @Param("title") String title,

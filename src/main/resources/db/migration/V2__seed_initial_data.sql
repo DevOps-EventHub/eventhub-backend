@@ -63,6 +63,5 @@ FROM event_seed e
 JOIN tmp_category_seed tcs ON tcs.code = e.category_code
 JOIN categories c ON c.name = tcs.name
 CROSS JOIN constants k
-WHERE NOT EXISTS (
-  SELECT 1 FROM events ev WHERE ev.title = e.title
-);
+LEFT JOIN events ev ON ev.title = e.title
+WHERE ev.id IS NULL;

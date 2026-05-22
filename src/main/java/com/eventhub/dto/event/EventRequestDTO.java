@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
 
 import java.time.OffsetDateTime;
 
-@Schema(description = "Dados para criaÃ§Ã£o/atualizaÃ§Ã£o de evento")
+@Schema(description = "Dados para criaÃƒÂ§ÃƒÂ£o/atualizaÃƒÂ§ÃƒÂ£o de evento")
 public record EventRequestDTO(
         @NotBlank @Size(max = 180) String title,
         @Size(max = 5000) String description,

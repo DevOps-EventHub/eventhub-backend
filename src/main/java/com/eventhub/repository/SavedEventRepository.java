@@ -11,4 +11,5 @@ public interface SavedEventRepository extends JpaRepository<SavedEvent, Long> {
     Optional<SavedEvent> findByUserIdAndEventId(Long userId, Long eventId);
     List<SavedEvent> findAllByUserOrderBySavedAtDesc(User user);
     List<SavedEvent> findAllByEventIdOrderBySavedAtDesc(Long eventId);
+    void deleteAllByEventId(Long eventId);
 }

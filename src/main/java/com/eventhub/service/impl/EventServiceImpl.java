@@ -9,6 +9,8 @@ import com.eventhub.exception.ResourceNotFoundException;
 import static com.eventhub.exception.ErrorMessages.*;
 import com.eventhub.repository.CategoryRepository;
 import com.eventhub.repository.EventRepository;
+import com.eventhub.repository.RegistrationRepository;
+import com.eventhub.repository.SavedEventRepository;
 import com.eventhub.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,8 @@ public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
     private final CategoryRepository categoryRepository;
+    private final SavedEventRepository savedEventRepository;
+    private final RegistrationRepository registrationRepository;
 
     @Override
     public Page<EventResponseDTO> findAll(String title, String category, String status, String location, Pageable pageable) {
@@ -56,6 +60,8 @@ public class EventServiceImpl implements EventService {
         if (!eventRepository.existsById(id)) {
             throw new ResourceNotFoundException(EVENT_NOT_FOUND);
         }
+        savedEventRepository.deleteAllByEventId(id);
+        registrationRepository.deleteAllByEventId(id);
         eventRepository.deleteById(id);
     }
 

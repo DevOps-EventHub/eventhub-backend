@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 
 import java.util.Set;
 
-@Schema(description = "Request para registro de usuÃ¡rio")
+@Schema(description = "Request para registro de usuÃƒÂ¡rio")
 public record RegisterRequestDTO(
         @Schema(example = "John Doe")
         @NotBlank @Size(max = 120) String name,
@@ -19,6 +19,6 @@ public record RegisterRequestDTO(
         @Schema(example = "StrongPass@123")
         @NotBlank @Size(min = 8, max = 100) String password,
         
-        @Schema(description = "PapÃ©is do usuÃ¡rio (opcional)", example = "[\"user\", \"admin\"]")
+        @Schema(description = "PapÃƒÂ©is do usuÃƒÂ¡rio (opcional)", example = "[\"user\", \"admin\"]")
         Set<Role> roles
 ) {}

@@ -9,15 +9,18 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class PostgresSchemaFixRunner implements CommandLineRunner {
 
+    private static final String CATEGORIES_TABLE = "categories";
+    private static final String EVENTS_TABLE = "events";
+
     private final JdbcTemplate jdbcTemplate;
 
     @Override
     public void run(String... args) {
-        fixByteaIfNeeded("categories", "name", "varchar(100)");
-        fixByteaIfNeeded("categories", "description", "varchar(255)");
-        fixByteaIfNeeded("events", "title", "varchar(180)");
-        fixByteaIfNeeded("events", "description", "varchar(5000)");
-        fixByteaIfNeeded("events", "location", "varchar(120)");
+        fixByteaIfNeeded(CATEGORIES_TABLE, "name", "varchar(100)");
+        fixByteaIfNeeded(CATEGORIES_TABLE, "description", "varchar(255)");
+        fixByteaIfNeeded(EVENTS_TABLE, "title", "varchar(180)");
+        fixByteaIfNeeded(EVENTS_TABLE, "description", "varchar(5000)");
+        fixByteaIfNeeded(EVENTS_TABLE, "location", "varchar(120)");
     }
 
     private void fixByteaIfNeeded(String table, String column, String targetType) {
